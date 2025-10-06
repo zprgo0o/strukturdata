@@ -3,7 +3,11 @@
 
 ## Dasar Teori
 
-C++ merupakan bahasa pemrograman yang dikembangkan oleh Bjarne Stroustrup pada awal tahun 1980-an pada Bell Laboratories. C++ merupakan pengembangan dari bahasa C menggunakan penambahan konsep pemrograman berorientasi objek (Object-Oriented Programming / OOP), sehingga dapat digunakan untuk membangun perangkat lunak dari skala kecil hingga besar dengan lebih efisien.C++ tetap menjadi salah satu bahasa pemrograman penting yang digunakan untuk pengembangan berbagai jenis perangkat lunak sampai saat ini.
+Dokumen ini menjelaskan konsep dasar pointer dan referensi dalam bahasa C++.
+Pointer adalah variabel yang menyimpan alamat memori dari variabel lain, sedangkan referensi adalah nama lain (alias) dari variabel yang sudah ada.
+Pointer menggunakan operator `&` untuk mengambil alamat variabel, sementara referensi secara langsung terhubung dengan variabel aslinya tanpa perlu simbol tambahan.
+Keduanya digunakan agar fungsi dapat mengubah nilai asli variabel yang dikirimkan dari luar fungsi, bukan hanya salinannya.
+Dalam praktiknya, call by pointer memakai alamat variabel `(&)`, sedangkan call by reference menggunakan referensi langsung (`&` di parameter fungsi)
 ## Guided
 
 ### guided 1 (call by pointer)
@@ -50,177 +54,72 @@ int main()
     return 0;
 }
 ```
-Program di atas merupakan contoh penggunaan call by reference untuk menukar nilai dua variabel tanpa menggunakan pointer. Variabel a dan b diinisialisasi dengan nilai 10 dan 20, lalu dikirim ke fungsi tukar() yang memiliki parameter referensi int &x dan int &y. Karena parameter tersebut merupakan referensi langsung ke variabel asli, setiap perubahan pada x dan y di dalam fungsi akan langsung memengaruhi a dan b di fungsi main(). Akibatnya, setelah fungsi dijalankan, nilai a dan b berhasil saling bertukar.
+> Program di atas merupakan contoh penggunaan call by reference untuk menukar nilai dua variabel tanpa menggunakan pointer. Variabel a dan b diinisialisasi dengan nilai 10 dan 20, lalu dikirim ke fungsi tukar() yang memiliki parameter referensi int &x dan int &y. Karena parameter tersebut merupakan referensi langsung ke variabel asli, setiap perubahan pada x dan y di dalam fungsi akan langsung memengaruhi a dan b di fungsi main(). Akibatnya, setelah fungsi dijalankan, nilai a dan b berhasil saling bertukar.
 ## Unguided
 
-### Soal 1
+### Unguided 1
 
 ```c++
 #include <iostream>
-#include <iomanip>
 using namespace std;
 
-float tambah(float a, float b) { return a + b; }
-float kurang(float a, float b) { return a - b; }
-float kali(float a, float b) { return a * b; }
-float bagi(float a, float b) { return (b != 0) ? a / b : 0; }
+int main(){
+    int matriks[3][3] = {
+        {1, 2, 3,},
+        {4, 5, 6,},
+        {7, 8, 9,}
+    };
 
-int main() {
-    float bil1, bil2;
+    int transpose[3][3];
 
-    cout << "Masukkan bilangan pertama (float): ";
-    cin >> bil1;
-
-    cout << "Masukkan bilangan kedua (float): ";
-    cin >> bil2;
-
-    cout << "\n--- Hasil Operasi Aritmatika ---" << endl;
-    cout << fixed << setprecision(2);
-
-    cout << "Penjumlahan : " << tambah(bil1, bil2) << endl;
-    cout << "Pengurangan : " << kurang(bil1, bil2) << endl;
-    cout << "Perkalian   : " << kali(bil1, bil2) << endl;
-
-    if (bil2 != 0) {
-        cout << "Pembagian   : " << bagi(bil1, bil2) << endl;
-    } else {
-        cout << "Pembagian   : Tidak dapat dilakukan (pembagian dengan nol)" << endl;
-    }
-
-    return 0;
-}
-
-```
-> Output
-> ![Screenshot bagian x](output/ss_Unguided1.png)
-
-Program tersebut menerima dua bilangan desimal (float) dari user melalui input. Setelah itu, program melakukan empat operasi aritmatika dasar: penjumlahan, pengurangan, perkalian, dan pembagian.
-Untuk menampilkan hasil program menggunakan fungsi terpisah (tambah, kurang, kali, dan bagi) agar kode lebih terstruktur. Hasil setiap operasi ditampilkan dengan format dua angka di belakang koma menggunakan fixed << setprecision(2) sehingga output terlihat rapi dan konsisten.
-Selain itu, pada operasi pembagian, program memeriksa apakah bilangan kedua bernilai nol. Jika tidak nol, hasil pembagian ditampilkan. Namun jika bernilai nol, program menampilkan pesan khusus “Tidak dapat dilakukan (pembagian dengan nol)” agar tidak terjadi error.
-
-
-### Soal 2
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-
-string satuanBelasan[] = {
-    "nol", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan",
-    "sepuluh", "sebelas", "dua belas", "tiga belas", "empat belas", "lima belas",
-    "enam belas", "tujuh belas", "delapan belas", "sembilan belas"
-};
-
-string puluhanText[] = {
-    "", "", "dua puluh", "tiga puluh", "empat puluh", "lima puluh",
-    "enam puluh", "tujuh puluh", "delapan puluh", "sembilan puluh"
-};
-
-string angkaKeTulisan(int n) {
-    if (n < 0 || n > 100) {
-        return "Angka di luar rentang.";
-    }
-
-    if (n < 20) {
-        return satuanBelasan[n];
-    }
-    if (n < 100) {
-        int p = n / 10;
-        int s = n % 10;
-        if (s == 0) {
-            return puluhanText[p];
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            transpose[j][i] = matriks[i][j];  
         }
-        return puluhanText[p] + " " + satuanBelasan[s];
-    }
-    return "seratus";
-}
-
-int main() {
-    int n;
-    cout << "Masukkan bilangan (0 s.d 100): ";
-    if (!(cin >> n)) {
-        cerr << "Input tidak valid." << endl;
-        return 1;
     }
 
-    cout << "\n" << n << " : " << angkaKeTulisan(n) << endl;
-    cout << "(Contoh: 79 : tujuh puluh sembilan)" << endl;
-
-    return 0;
-}
-
-```
-
-> Output
-> ![Screenshot bagian x](output/ss_unguided2.png)
-
-penjelasan kode
-
-Program ini meminta sebuah bilangan bulat (0–100) dari pengguna lewat input. Setelah itu, program akan mengubah angka tersebut menjadi tulisan sederhana dalam bahasa Indonesia. Supaya lebih rapi dan mudah dipahami, proses konversi dibuat dalam fungsi terpisah (angkaKeTulisan). Di dalam fungsi ini, angka diproses dengan beberapa kondisi: Jika angka kurang dari 20, langsung diambil dari daftar khusus (0–19). Jika angka antara 20 sampai 99, angka dipisahkan menjadi puluhan dan satuan, lalu digabungkan dalam bentuk tulisan. Jika angka tepat 100, hasilnya langsung dituliskan sebagai “seratus”. Dengan cara ini, kode program lebih terstruktur dan mudah dikembangkan. Selain itu, program juga memeriksa input pengguna agar tetap berada dalam rentang yang benar (0–100). Jika input tidak valid atau di luar batas, program menampilkan pesan khusus agar tidak terjadi error.
-
-### Soal 3
-```c++
-#include <iostream>
-using namespace std;
-
-void cetakSpasi(int jumlah) {
-    for (int i = 0; i < jumlah; i++) {
-        cout << " ";
-    }
-}
-void cetakAngkaMenurun(int batas) {
-    for (int i = batas; i >= 1; i--) {
-        cout << i;
-        if (i > 1) cout << " ";
-    }
-}
-void cetakAngkaNaik(int batas) {
-    for (int i = 1; i <= batas; i++) {
-        cout << i;
-        if (i < batas) cout << " ";
-    }
-}
-
-void cetakPolaMirror(int N) {
-    if (N <= 0) {
-        cout << "Input harus bilangan bulat positif." << endl;
-        return;
-    }
-
-    for (int i = N; i >= 1; i--) {
-        cetakSpasi(N - i);
-        cetakAngkaMenurun(i);
-        cout << " * ";
-        cetakAngkaNaik(i);
+    cout << "matriks awal:" << endl;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << matriks[i][j] << " ";
+        }
         cout << endl;
     }
-    cetakSpasi(N);
-    cout << "*" << endl;
-}
-
-int main() {
-    int N;
-    cout << "Masukkan bilangan bulat untuk pola (N): ";
-    if (!(cin >> N)) {
-        cerr << "Input tidak valid. Harap masukkan angka." << endl;
-        return 1;
+    cout << "matriks hasil tranpose" << endl;
+    for (int i = 0; i<3; i++){
+        for (int j = 0; j<3; j++){
+            cout << transpose[i][j] << " ";
+        }
+        cout << endl;
     }
-
-    cout << "\nOutput:\n";
-    cetakPolaMirror(N);
-
     return 0;
 }
 ```
+> Program ini membuat matriks 3×3, lalu menukar baris dan kolomnya menggunakan `transpose[j][i]` = `matriks[i][j]`. Hasilnya kemudian ditampilkan dalam bentuk matriks baru.
 
-> Output
-> ![Screenshot bagian x](output/ss_unguided3.png)
 
-Program ini meminta dua bilangan desimal (float) dari pengguna lewat input. Setelah itu, program menjalankan empat operasi aritmatika dasar, yaitu penjumlahan, pengurangan, perkalian, dan pembagian.
-Supaya lebih rapi dan mudah dipahami, setiap operasi dibuat dalam fungsi terpisah (tambah, kurang, kali, dan bagi). Jadi, kode programnya lebih terstruktur dan gampang kalau mau dikembangkan lagi.
-Hasil perhitungan ditampilkan dengan format dua angka di belakang koma menggunakan fixed << setprecision(2). Dengan cara ini, output terlihat konsisten dan tidak berantakan, meskipun hasil perhitungannya berupa angka desimal panjang.
+### Unguided 2
+
+```c++
+#include <iostream>
+using namespace std;
+
+void kuadratkan(int &x) {
+    x = x*x;
+}
+
+int main() {
+    int nilai = 5;
+    cout << "nilai awal: " << nilai << endl;
+
+    kuadratkan(nilai);
+
+    cout << "nilai setelah dikuadratkan: " << nilai << endl;
+    return 0;
+}
+```
+> Program pada soal nomor 2 merupakan contoh penggunaan **call by reference** di C++. Program ini memiliki fungsi `kuadratkan(int &x)` yang menerima parameter berupa referensi ke variabel asli, sehingga setiap perubahan nilai pada `x` akan langsung memengaruhi variabel yang dikirim dari fungsi `main()`. Di dalam `main()`, variabel `nilai` diinisialisasi dengan angka 5, lalu dipanggil fungsi `kuadratkan(nilai)` yang mengubah nilai tersebut menjadi hasil kuadratnya, yaitu 25. Program ini kemudian menampilkan nilai sebelum dan sesudah pemanggilan fungsi untuk menunjukkan bahwa perubahan terjadi secara langsung pada variabel asli.
 
 ## Referensi
 
-1. https://en.wikipedia.org/wiki/Data_structure (diakses blablabla)
+1. https://www.scribd.com/document/788845901/Kuliah-07-Referensi-Pointer-Dan-Dereferensi
