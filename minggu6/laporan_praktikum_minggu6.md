@@ -475,3 +475,4 @@ Program di atas terdiri dari tiga file utama yang saling terhubung, yaitu Doubly
 
 ## Referensi
 1. https://en.wikipedia.org/wiki/Doubly_linked_list?
+2. https://www.w3schools.com/cpp/cpp_data_structures.asp
