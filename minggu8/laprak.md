@@ -417,3 +417,4 @@ void printInfo(Queue Q) {
 >Pada alternatif 3, queue menggunakan konsep circular queue di mana head dan tail bergerak secara melingkar menggunakan operasi modulo terhadap ukuran array. Elemen yang dihapus atau ditambahkan tidak menyebabkan penggeseran data, dan ruang array yang telah dilewati dapat digunakan kembali. Queue dinyatakan kosong jika head bernilai -1, dan penuh jika posisi (tail + 1) % MAX sama dengan head. Mekanisme ini merupakan yang paling efisien karena memanfaatkan seluruh kapasitas array secara optimal dan menghindari pemborosan memori.
 
 ## Referensi
+https://www.w3schools.com/go/index.php
